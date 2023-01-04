@@ -1,0 +1,52 @@
+# Post Training Quantization
+
+## 資料
+
+https://pytorch.org/TensorRT/tutorials/ptq.html
+
+https://github.com/quic/aimet
+
+INTEGER QUANTIZATION FOR DEEP LEARNING INFERENCE: PRINCIPLES AND EMPIRICAL EVALUATION
+https://arxiv.org/pdf/2004.09602.pdf
+
+Quantization of Deep Neural Networks for Accumulator-constrained Processors
+https://arxiv.org/pdf/2004.11783.pdf
+
+Adaptive Rounding for Post-Training Quantization
+https://arxiv.org/pdf/2004.10568.pdf
+
+tinyML Talks: A Practical Guide to Neural Network Quantization
+https://www.youtube.com/watch?v=KASuxB3XoYQ
+
+TinyML Book Screencast #4 - Quantization
+https://www.youtube.com/watch?v=-jBmqY_aFwE
+
+Quantization in PyTorch 2.0 Export at PyTorch Conference 2022
+https://www.youtube.com/watch?v=AkoIH5urVTU
+
+MIXED-PRECISION NEURAL NETWORK QUANTIZATION VIA LEARNED LAYER-WISE IMPORTANCE
+https://arxiv.org/pdf/2203.08368.pdf
+
+Deep Dive on PyTorch Quantization - Chris Gottbrath
+https://www.youtube.com/watch?v=c3MT2qV5f9w
+
+https://github.com/microsoft/onnxruntime/tree/main/onnxruntime/python/tools/quantization
+https://github.com/microsoft/onnxruntime-inference-examples/tree/main/quantization/image_classification/cpu
+https://onnxruntime.ai/docs/performance/quantization.html
+
+
+- ONNXモデルの中間層を含めた全ての層の出力特徴マップを取得出来るように改変したモデルを用意する
+  - https://github.com/microsoft/onnxruntime/issues/1455
+- データセットを使って各層の出力特徴マップのヒストグラムを調べる
+  - 最小値と最大値を調べる
+  - ヒストグラムを調べる
+    - https://github.com/pytorch/pytorch/blob/master/torch/ao/quantization/observer.py#L883
+  - 特徴マップと重みの scale と zero_point を決める
+  - 整数量子化モデルの各層の特徴マップと重みの精度(ビット数、対称/非対称)の構成を決める
+  - 整数量子化モデルを使い、データセットに対して推論を行う
+  - 元のfloatモデルと整数量子化モデルの結果を比較して誤差を調べる
+
+- 推論実行を行うプログラムを記述
+  - ONNXモデルに限らず、tfliteモデルや、APIで定義したネットワーク等、色々と実行できるようにする。
+
+
