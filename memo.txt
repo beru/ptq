@@ -1,3 +1,4 @@
+
 # Post Training Quantization
 
 ## 資料
@@ -14,6 +15,9 @@ https://arxiv.org/pdf/2004.11783.pdf
 
 Adaptive Rounding for Post-Training Quantization
 https://arxiv.org/pdf/2004.10568.pdf
+
+A White Paper on Neural Network Quantization
+https://arxiv.org/pdf/2106.08295.pdf
 
 tinyML Talks: A Practical Guide to Neural Network Quantization
 https://www.youtube.com/watch?v=KASuxB3XoYQ
@@ -34,6 +38,40 @@ https://github.com/microsoft/onnxruntime/tree/main/onnxruntime/python/tools/quan
 https://github.com/microsoft/onnxruntime-inference-examples/tree/main/quantization/image_classification/cpu
 https://onnxruntime.ai/docs/performance/quantization.html
 
+Data-Free Quantization Through Weight Equalization and Bias Correction
+https://arxiv.org/abs/1906.04721
+
+Quantization Error in Neural Networks
+https://www.youtube.com/watch?v=w0yLxPfcNyg
+
+HAWQ: Hessian AWare Quantization
+https://github.com/Zhen-Dong/HAWQ
+
+HAWQ: Hessian AWare Quantization of Neural Networks With Mixed-Precision
+https://openaccess.thecvf.com/content_ICCV_2019/html/Dong_HAWQ_Hessian_AWare_Quantization_of_Neural_Networks_With_Mixed-Precision_ICCV_2019_paper.html
+
+HAWQ-V2: Hessian Aware trace-Weighted Quantization of Neural Networks
+https://proceedings.neurips.cc//paper/2020/file/d77c703536718b95308130ff2e5cf9ee-Paper.pdf
+
+HAWQV3: Dyadic Neural Network Quantization
+https://arxiv.org/abs/2011.10680
+
+## 整数量子化機能を持つソフトウェア
+
+https://onnxruntime.ai/
+https://docs.openvino.ai/2020.4/pot_README.html
+https://www.tensorflow.org/model_optimization?hl=en
+https://github.com/Tencent/ncnn/blob/master/docs/how-to-use-and-FAQ/quantized-int8-inference.md
+https://pytorch.org/TensorRT/tutorials/ptq.html
+https://quic.github.io/aimet-pages/AimetDocs/user_guide/index.html
+
+Hessian AWare Quantization V3: Dyadic Neural Network Quantization
+https://www.youtube.com/watch?v=VRiujqKU254
+
+GTC 2021: Systematic Neural Network Quantization
+https://www.youtube.com/watch?v=e4PCkFiIrvM
+
+## 概要
 
 - ONNXモデルの中間層を含めた全ての層の出力特徴マップを取得出来るように改変したモデルを用意する
   - https://github.com/microsoft/onnxruntime/issues/1455

@@ -7,7 +7,7 @@ from onnx import numpy_helper
 from PIL import Image
 import ast
 import json
-import xml.etree.ElementTree as ET
+import imagenet
 
 def preprocess(image):
   image = image.astype('float32')
@@ -36,37 +36,33 @@ def crop_center(pil_img, crop_width, crop_height):
 def crop_max_square(pil_img):
     return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
-model_file = "./models/mobilenetv2-10.onnx"
-images_folder = "./imagenet-object-localization-challenge/ILSVRC/Data/CLS-LOC/val"
-annotation_folder = "./imagenet-object-localization-challenge/ILSVRC/Annotations/CLS-LOC/val"
+if len(sys.argv) < 2:
+  print(f"usage: python mobilenet_imagenet_accuracy.py model_file_path")
+  sys.exit()
 
-with open("imagenet_class_index.json", "r") as f:
+model_file_path = sys.argv[1]
+
+with open("imagenet/imagenet_class_index.json", "r") as f:
   class_label_map = json.load(f)
 
-session = onnxruntime.InferenceSession(model_file)
+session = onnxruntime.InferenceSession(model_file_path)
 input_name = session.get_inputs()[0].name
 output_name = session.get_outputs()[0].name
-
-filenames = os.listdir(images_folder)
 
 top1_success_filenames = []
 top5_success_filenames = []
 
 cnt = 0
 
-for filename in filenames:
+data = imagenet.Data()
 
-  filename_wo_ext, ext = os.path.splitext(filename)
-  image_path = os.path.join(images_folder, filename)
-  image = Image.open(image_path)
+for filename, image, correct_class in data:
+
   image = crop_max_square(image)
   image = image.resize((224, 224))
   image = image.convert("RGB")
   image = np.array(image).transpose(2, 0, 1)
   X = preprocess(image)
-  
-  xml_path = os.path.join(annotation_folder, filename_wo_ext + ".xml")
-  correct_class = ET.parse(xml_path).getroot().find(".//object/name").text
   
   ortvalue = onnxruntime.OrtValue.ortvalue_from_numpy(X)
   raw_result = session.run([output_name], {input_name: ortvalue})
@@ -76,7 +72,7 @@ for filename in filenames:
   sort_idx = np.argsort(res)[::-1]
   
   top5_idx = sort_idx[:5]
-  print(cnt, filename, top5_idx, res[top5_idx])
+  print(f"{cnt} {filename} { *top5_idx, *res[top5_idx], }")
 
   for i in range(5):
     idx = sort_idx[i]
@@ -94,6 +90,6 @@ total_cnt = cnt
 top1_cnt = len(top1_success_filenames)
 top5_cnt = len(top5_success_filenames) + top1_cnt
   
-print(f"Top1 Accuracy : {top1_cnt * 100 / total_cnt}%")
-print(f"Top5 Accuracy : {top5_cnt * 100 / total_cnt}%")
+print(f"Top1 Accuracy : {top1_cnt * 100 / total_cnt} %")
+print(f"Top5 Accuracy : {top5_cnt * 100 / total_cnt} %")
 

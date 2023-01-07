@@ -15,7 +15,11 @@ def softmax(x):
 def postprocess(result):
   return softmax(np.array(result)).tolist()
 
-model_file_path = "./models/mnist-12.onnx"
+if len(sys.argv) < 2:
+  print(f"usage: mnist_accuracy.py model_file_path")
+  sys.exit()
+
+model_file_path = sys.argv[1]
 
 session = onnxruntime.InferenceSession(model_file_path)
 input_name = session.get_inputs()[0].name
@@ -27,7 +31,8 @@ output_name = session.get_outputs()[0].name
 data = mnist.Data()
 data.load()
 
-data.test_set_images = data.test_set_images.astype(np.float32) / 255
+data.test_set_images = data.test_set_images.astype(np.float32)
+#data.test_set_images /= 255
 
 matched_cnt = 0
 
