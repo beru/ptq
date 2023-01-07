@@ -6,7 +6,6 @@ import onnx
 from onnx import numpy_helper
 from PIL import Image
 import ast
-import json
 import imagenet
 
 def preprocess(image):
@@ -27,23 +26,20 @@ def postprocess(result):
   return softmax(np.array(result)).tolist()
 
 def crop_center(pil_img, crop_width, crop_height):
-    img_width, img_height = pil_img.size
-    return pil_img.crop(((img_width - crop_width) // 2,
-                         (img_height - crop_height) // 2,
-                         (img_width + crop_width) // 2,
-                         (img_height + crop_height) // 2))
+  img_width, img_height = pil_img.size
+  return pil_img.crop(((img_width - crop_width) // 2,
+                       (img_height - crop_height) // 2,
+                       (img_width + crop_width) // 2,
+                       (img_height + crop_height) // 2))
 
 def crop_max_square(pil_img):
-    return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
+  return crop_center(pil_img, min(pil_img.size), min(pil_img.size))
 
 if len(sys.argv) < 2:
   print(f"usage: python mobilenet_imagenet_accuracy.py model_file_path")
   sys.exit()
 
 model_file_path = sys.argv[1]
-
-with open("imagenet/imagenet_class_index.json", "r") as f:
-  class_label_map = json.load(f)
 
 session = onnxruntime.InferenceSession(model_file_path)
 input_name = session.get_inputs()[0].name
@@ -76,7 +72,7 @@ for filename, image, correct_class in data:
 
   for i in range(5):
     idx = sort_idx[i]
-    class_label = class_label_map[str(idx)]
+    class_label = data.class_label_map[str(idx)]
     if class_label[0] == correct_class:
       if i == 0:
         top1_success_filenames.append(filename)
@@ -85,6 +81,9 @@ for filename, image, correct_class in data:
       break
 
   cnt += 1
+  
+  if cnt > 1000:
+    break
   
 total_cnt = cnt
 top1_cnt = len(top1_success_filenames)

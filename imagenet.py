@@ -1,5 +1,6 @@
 
 import os
+import json
 from PIL import Image
 import xml.etree.ElementTree as ET
 
@@ -10,6 +11,9 @@ class Data:
   def __init__(self):
     self._filenames = os.listdir(images_folder)
     self._i = 0
+    
+    with open("imagenet/imagenet_class_index.json", "r") as f:
+      self.class_label_map = json.load(f)
     
   def __iter__(self):
     return self
