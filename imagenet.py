@@ -20,8 +20,8 @@ class Data:
     
   def __next__(self):
     
-    if self._i == len(self._filenames):
-      raise StopIteration()
+    if self._i >= (len(self._filenames) // 1):
+      return
       
     filename = self._filenames[self._i]
     filename_wo_ext, ext = os.path.splitext(filename)

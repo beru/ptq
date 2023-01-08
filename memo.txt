@@ -1,6 +1,10 @@
 
 # Post Training Quantization
 
+## models
+
+https://developers-jp.googleblog.com/2020/04/efficientnet-lite.html
+
 ## 資料
 
 https://pytorch.org/TensorRT/tutorials/ptq.html
