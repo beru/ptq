@@ -10,6 +10,10 @@ import ast
 import imagenet
 
 def preprocess(image):
+  image = crop_max_square(image)
+  image = image.resize((224, 224))
+  image = image.convert("RGB")
+  
   image = np.array(image).astype('float32')
   image -= [127.0, 127.0, 127.0]
   image /= [128.0, 128.0, 128.0]
@@ -45,9 +49,6 @@ data = imagenet.Data()
 
 for filename, image, correct_class in data:
 
-  image = crop_max_square(image)
-  image = image.resize((224, 224))
-  image = image.convert("RGB")
   X = preprocess(image)
   
   ortvalue = onnxruntime.OrtValue.ortvalue_from_numpy(X)
