@@ -20,7 +20,7 @@ class Data:
     
   def __next__(self):
     
-    if self._i >= (len(self._filenames) // 1):
+    if self._i >= (len(self._filenames) // 100):
       return
       
     filename = self._filenames[self._i]

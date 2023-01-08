@@ -4,6 +4,7 @@
 ## models
 
 https://developers-jp.googleblog.com/2020/04/efficientnet-lite.html
+https://keras.io/api/applications/
 
 ## 資料
 
