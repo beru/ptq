@@ -2,10 +2,13 @@
 import numpy
 import onnxruntime
 import os
+import sys
 from onnxruntime.quantization import CalibrationDataReader
 from onnxruntime.quantization import QuantFormat, QuantType, CalibrationMethod, quantize_static
 import imagenet
 import numpy as np
+
+print(onnxruntime.__version__)
 
 def crop_center(pil_img, crop_width, crop_height):
   img_width, img_height = pil_img.size
@@ -34,12 +37,13 @@ class ImageNetDataReader(CalibrationDataReader):
     self.data = imagenet.Data()
     
   def get_next(self):
-    ret = next(self.data)
-    if ret is None:
+    try:
+      ret = next(self.data)
+      filename, image, correct_class = *ret,
+      image = preprocess(image)
+      return {self.input_name: image}
+    except:
       return
-    filename, image, correct_class = *ret,
-    image = preprocess(image)
-    return {self.input_name: image}
 
 # python -m onnxruntime.quantization.preprocess --input models\efficientnet-lite4-11.onnx --output models\efficientnet-lite4-11-infer.onnx
 input_model_path = "./models/efficientnet-lite4-11-infer.onnx"

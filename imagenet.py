@@ -21,8 +21,8 @@ class Data:
   def __next__(self):
     
     if self._i >= (len(self._filenames) // 100):
-      return
-      
+      raise StopIteration
+    
     filename = self._filenames[self._i]
     filename_wo_ext, ext = os.path.splitext(filename)
     image_path = os.path.join(images_folder, filename)

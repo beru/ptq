@@ -6,6 +6,11 @@
 https://developers-jp.googleblog.com/2020/04/efficientnet-lite.html
 https://keras.io/api/applications/
 
+## onnxruntime
+
+build.bat --parallel --build_wheel --skip_tests
+python -m pip install .\build\Windows\Debug\Debug\dist\onnxruntime-1.14.0-cp39-cp39-win_amd64.whl
+
 ## 資料
 
 https://pytorch.org/TensorRT/tutorials/ptq.html
